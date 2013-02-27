@@ -1,0 +1,10 @@
+{
+	"name" : "dmr-imap-norikae",
+	"version" : "0.0.0",
+	"author" : "David M. Roehrscheid <david.roehrscheid@gmail.com>",
+	"description" : "Checks your email and sends you a reply with information about how to get home by train in Tokyo.",
+
+	"dependencies" : {
+		"imap" : "0.7.x"
+	}
+}
