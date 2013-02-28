@@ -1,63 +1,53 @@
 // @author: David M. Roehrscheid
 // Twitter: @daviddavid
-
-var Imap = require("imap"),
-	inspect = require("util").inspect,
-	userdata = require("./account.json");
-
-var imap = new Imap(
-	{
-		user: userdata.user,
-		password: userdata.password,
-		host: "imap.gmail.com",
-		port: 993,
-		secure: true
-	}
-);
-
-var DEBUG = true;
-
-var state = {};
-
-/* **** */
-
-function debug(message){
-	if ( DEBUG ){
-		console.log(message);
-	}
+global.DEBUG = true;
+global.debug = function(message){
+  if ( global.DEBUG ) {
+    console.log(message);
+  }
 }
-function log(message){
-	console.log(message);
+global.error = function(message){
+  console.log(message);
 }
-function error(message){
-	log(message);
+global.die = function(error){
+  global.error("I'm dieing: " + error);
+  process.exit(1);
 }
 
-function die(err){
-	error("Error: " + err);
-	process.exit(1)
+var  inspect = require("util").inspect,
+     colors = require("colors");	
+
+     lookup = require("./lib/norikae-jorudan.js"),
+     mailbox = require("./lib/norikae-mailbox.js"),
+     mailparser = require("./lib/norikae-parsemail.js"),
+
+     userdata = require("./account.json"),
+     mailconf = {
+      user: userdata.user,
+      password: userdata.password,
+      host: "imap.gmail.com",
+      port: 993,
+      secure: true
+     };
+
+// Add different commands here
+function evaluate(result){
+  if ( result.command === "norikae" ){
+  	debug("server: ".red + "Got a 'norikae' request: " + result.from + " --> " + result.to);
+  }
 }
 
-function openInbox(callback){
-	imap.connect(function(err){
-		if ( err ) { die(err); }
-		imap.openBox("INBOX", true, callback);
-	});
-}
+// Mailbox
+mailbox.connect(mailconf);
 
-imap.on("mail", function(maxmessages){
-	debug("New maiL!");
-	debug(state.mailbox.messages);
-	//imap.seq.fetch(state.mailbox);
-	process.exit(0);
+mailbox.on("mailreadytoparse", function(mail){ 
+  debug("server: ".red + "Parsing new mail.");
+  mailparser.parsemail(mail, function(result){
+  	if ( result.success ){
+  		evaluate(result);
+  	}
+  });
 });
 
-imap.on("error", function(err){
-	error("Error event fired: " + err)
-});
-
-openInbox(function(err, mailbox){
-	if (err){ die(err); }
-	state.mailbox = mailbox;
-	debug("Successfully logged in.")
-});
+/* ***** */
+// Http Server

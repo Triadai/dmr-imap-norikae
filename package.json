@@ -5,6 +5,8 @@
 	"description" : "Checks your email and sends you a reply with information about how to get home by train in Tokyo.",
 
 	"dependencies" : {
-		"imap" : "0.7.x"
+		"imap" : "0.7.x",
+		"colors" : "0.6.x",
+		"mailparser" : "0.3.x"
 	}
 }
