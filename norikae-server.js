@@ -15,7 +15,8 @@ global.die = function(error){
 }
 
 var  inspect = require("util").inspect,
-     colors = require("colors");	
+     colors = require("colors"),
+     http = require("http"),	
 
      lookup = require("./lib/norikae-jorudan.js"),
      mailbox = require("./lib/norikae-mailbox.js"),
@@ -28,7 +29,10 @@ var  inspect = require("util").inspect,
       host: "imap.gmail.com",
       port: 993,
       secure: true
-     };
+     },
+
+     mailcount = 0
+     requestcount = 0;
 
 // Add different commands here
 function evaluate(result){
@@ -42,8 +46,10 @@ mailbox.connect(mailconf);
 
 mailbox.on("mailreadytoparse", function(mail){ 
   debug("server: ".red + "Parsing new mail.");
+  mailcount++;
   mailparser.parsemail(mail, function(result){
   	if ( result.success ){
+  		requestcount++;
   		evaluate(result);
   	}
   });
@@ -51,3 +57,10 @@ mailbox.on("mailreadytoparse", function(mail){
 
 /* ***** */
 // Http Server
+var app = http.createServer(httphandler);
+app.listen(8080);
+
+function httphandler(req, res){
+  res.writeHead(200);
+  res.end("Parsed " + mailcount + " mails since start - " + requestcount + " requests.");
+}
