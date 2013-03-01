@@ -67,6 +67,7 @@ if ( myargs.length > 0 ){
 }
 var app = http.createServer(httphandler);
 app.listen(port);
+debug("server: ".red + "listening to http on port " + port);
 
 function httphandler(req, res){
   res.writeHead(200);
