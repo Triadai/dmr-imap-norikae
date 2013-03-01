@@ -63,14 +63,7 @@ mailbox.on("mailreadytoparse", function(mail){
 
 /* ***** */
 // Http Server
-var myargs = process.argv.slice(2), port = 8080;
-if ( myargs.length > 0 ){
-  try{
-    port = parseInt(myargs[0]);
-  } catch (err) {
-    die(err);
-  }
-}
+var port = process.env.PORT || 8080;
 var app = http.createServer(httphandler);
 app.listen(port);
 debug("server: ".red + "listening to http on port " + port);
