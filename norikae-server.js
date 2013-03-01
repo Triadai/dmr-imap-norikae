@@ -57,8 +57,16 @@ mailbox.on("mailreadytoparse", function(mail){
 
 /* ***** */
 // Http Server
+var myargs = process.argv.slice(2), port = 8080;
+if ( myargs.length > 0 ){
+  try{
+    port = parseInt(myargs[0]);
+  } catch (err) {
+    die(err);
+  }
+}
 var app = http.createServer(httphandler);
-app.listen(8080);
+app.listen(port);
 
 function httphandler(req, res){
   res.writeHead(200);
