@@ -34,6 +34,12 @@ var  inspect = require("util").inspect,
      mailcount = 0
      requestcount = 0;
 
+if ( process.env.norikaeusername && process.env.norikaepassword ) { 
+  debug("server: ".red + "Setting user and password from environment variables.");
+  mailconf.user = process.env.norikaeusername;
+  mailconf.password = process.env.norikaepassword;
+}
+
 // Add different commands here
 function evaluate(result){
   if ( result.command === "norikae" ){
