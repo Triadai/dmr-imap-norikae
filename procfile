@@ -1,1 +1,1 @@
-web: node norikae-server.js $PORT
+web: node norikae-server.js 
