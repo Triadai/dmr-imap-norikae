@@ -15,17 +15,16 @@ global.die = function(error){
 }
 
 var  inspect = require("util").inspect,
-     colors = require("colors"),
      http = require("http"),	
+     colors = require("colors"),
 
      lookup = require("./lib/norikae-jorudan.js"),
      mailbox = require("./lib/norikae-mailbox.js"),
      mailparser = require("./lib/norikae-parsemail.js"),
 
-     userdata = require("./account.json"),
      mailconf = {
-      user: userdata.user,
-      password: userdata.password,
+      user: "",
+      password: "",
       host: "imap.gmail.com",
       port: 993,
       secure: true
@@ -38,6 +37,12 @@ if ( process.env.norikaeusername && process.env.norikaepassword ) {
   debug("server: ".red + "Setting user and password from environment variables.");
   mailconf.user = process.env.norikaeusername;
   mailconf.password = process.env.norikaepassword;
+}
+else{
+  debug("server: ".red + "Setting user and password from json file.");
+  userdata = require("./account.json");
+  mailconf.user = userdata.user;
+  mailconf.password = userdata.password;
 }
 
 // Add different commands here
