@@ -21,6 +21,7 @@ var  inspect = require("util").inspect,
      lookup = require("./lib/norikae-jorudan.js"),
      mailbox = require("./lib/norikae-mailbox.js"),
      mailparser = require("./lib/norikae-parsemail.js"),
+     mailsender = require("./lib/norikae-sendmail.js"),
 
      mailconf = {
       user: "",
@@ -30,10 +31,23 @@ var  inspect = require("util").inspect,
       secure: true,
       ssl: true
      },
+     sendmailconf = {
+        host : "smtp.gmail.com",
+        ssl: true
+     },
 
-     mailcount = 0
+     mailcount = 0,
      requestcount = 0;
 
+// Add different commands here
+function evaluate(result){
+  if ( result.command === "norikae" ){
+  	debug("server: ".red + "Got a 'norikae' request: " + result.from + " --> " + result.to);
+    lookup.getConnections(result, function(conf, res){ return function(connections){ mailsender.send(conf, res, connections); }}(sendmailconf, result));
+  }
+}
+
+// Mailbox
 if ( process.env.norikaeusername && process.env.norikaepassword ) { 
   debug("server: ".red + "Setting user and password from environment variables.");
   mailconf.user = process.env.norikaeusername;
@@ -45,16 +59,9 @@ else{
   mailconf.user = userdata.user;
   mailconf.password = userdata.password;
 }
+sendmailconf.user = mailconf.user;
+sendmailconf.password = mailconf.password;
 
-// Add different commands here
-function evaluate(result){
-  if ( result.command === "norikae" ){
-  	debug("server: ".red + "Got a 'norikae' request: " + result.from + " --> " + result.to);
-    var connections = lookup.getConnections(result);
-  }
-}
-
-// Mailbox
 mailbox.connect(mailconf);
 
 mailbox.on("mailreadytoparse", function(mail){ 

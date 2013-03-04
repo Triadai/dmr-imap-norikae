@@ -9,7 +9,8 @@
 		"colors" : "0.6.x",
 		"mailparser" : "0.3.x",
 		"jsdom": "0.5.x",
-		"request": "2.14.x"
+		"request": "2.14.x",
+		"emailjs": "0.3.x"
 	},
 
 	"engines" : {
