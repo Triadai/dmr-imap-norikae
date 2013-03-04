@@ -27,7 +27,8 @@ var  inspect = require("util").inspect,
       password: "",
       host: "imap.gmail.com",
       port: 993,
-      secure: true
+      secure: true,
+      ssl: true
      },
 
      mailcount = 0
