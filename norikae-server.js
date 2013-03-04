@@ -49,6 +49,7 @@ else{
 function evaluate(result){
   if ( result.command === "norikae" ){
   	debug("server: ".red + "Got a 'norikae' request: " + result.from + " --> " + result.to);
+    var connections = lookup.getConnections(result);
   }
 }
 

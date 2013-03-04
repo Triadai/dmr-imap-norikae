@@ -7,7 +7,9 @@
 	"dependencies" : {
 		"imap" : "0.7.x",
 		"colors" : "0.6.x",
-		"mailparser" : "0.3.x"
+		"mailparser" : "0.3.x",
+		"jsdom": "0.5.x",
+		"request": "2.14.x"
 	},
 
 	"engines" : {
