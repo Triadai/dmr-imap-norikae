@@ -75,6 +75,10 @@ mailbox.on("mailreadytoparse", function(mail){
   });
 });
 
+mailbox.on("error", function(error){ debug("mailbox on error: " + error);});
+mailbox.on("end", function(){ debug("maibox on end");});
+mailbox.on("close", function(bool){ var s = "mailbox on close with"; if(!bool){ s+="out";}; s+=" error"; debug(s); });
+
 /* ***** */
 // Http Server
 var port = process.env.PORT || 8080;
