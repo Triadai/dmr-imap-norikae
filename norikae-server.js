@@ -43,7 +43,7 @@ var  inspect = require("util").inspect,
 function evaluate(result){
   if ( result.command === "norikae" ){
     debug("server: ".red + "Got a 'norikae' request: " + result.from + " --> " + result.to);
-    lookup.getConnections(result, function(conf, res){ return function(connections){ mailsender.send(conf, res, connections); }}(sendmailconf, result));
+    lookup.getConnections(result, function(conf, res){ return function(connections){ mailsender.send(conf, res, connections); };}(sendmailconf, result));
   }
 }
 
