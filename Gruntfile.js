@@ -6,10 +6,9 @@ module.exports = function(grunt){
 				"bitwise" : true,
 				"curly" : true,
 				"sub" : true,
-				"global" : {
+				"globals" : {
 					"jQuery" : true,
-					"node" : true,
-					"global" : true
+					"node" : true
 				}
 			},
 			all_files : ['norikae-server.js', 'lib/*.js']	
