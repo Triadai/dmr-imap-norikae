@@ -5,17 +5,17 @@ global.debug = function(message){
   if ( global.DEBUG ) {
     console.log(message);
   }
-}
+};
 global.error = function(message){
   console.log(message);
-}
+};
 global.die = function(error){
   global.error("I'm dieing: " + error);
   process.exit(1);
-}
+};
 
 var  inspect = require("util").inspect,
-     http = require("http"),	
+     http = require("http"),  
      colors = require("colors"),
 
      lookup = require("./lib/norikae-jorudan.js"),
@@ -42,7 +42,7 @@ var  inspect = require("util").inspect,
 // Add different commands here
 function evaluate(result){
   if ( result.command === "norikae" ){
-  	debug("server: ".red + "Got a 'norikae' request: " + result.from + " --> " + result.to);
+    debug("server: ".red + "Got a 'norikae' request: " + result.from + " --> " + result.to);
     lookup.getConnections(result, function(conf, res){ return function(connections){ mailsender.send(conf, res, connections); }}(sendmailconf, result));
   }
 }
@@ -68,16 +68,16 @@ mailbox.on("mailreadytoparse", function(mail){
   debug("server: ".red + "Parsing new mail.");
   mailcount++;
   mailparser.parsemail(mail, function(result){
-  	if ( result.success ){
-  		requestcount++;
-  		evaluate(result);
-  	}
+    if ( result.success ){
+      requestcount++;
+      evaluate(result);
+    }
   });
 });
 
 mailbox.on("error", function(error){ debug("mailbox on error: " + error);});
 mailbox.on("end", function(){ debug("maibox on end");});
-mailbox.on("close", function(bool){ var s = "mailbox on close with"; if(!bool){ s+="out";}; s+=" error"; debug(s); });
+mailbox.on("close", function(bool){ var s = "mailbox on close with"; if(!bool){ s+="out";} s+=" error"; debug(s); });
 
 /* ***** */
 // Http Server
@@ -88,5 +88,14 @@ debug("server: ".red + "listening to http on port " + port);
 
 function httphandler(req, res){
   res.writeHead(200);
-  res.end("Parsed " + mailcount + " mails since start - " + requestcount + " requests.");
+  var response = "Parsed " + mailcount + " mails since start - " + requestcount + " requests. Server is ";
+  if ( mailbox.is_connected() ){ response += "connected";}
+  else{ response += "not connected";}
+
+  response += " and ";
+
+  if ( mailbox.is_authenticated() ){ response += "authenticated";}
+  else{ response += "not authenticated";}
+
+  res.end(response);
 }

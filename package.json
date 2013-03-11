@@ -1,20 +1,23 @@
 {
-	"name" : "dmr-imap-norikae",
-	"version" : "0.0.0",
-	"author" : "David M. Roehrscheid <david.roehrscheid@gmail.com>",
-	"description" : "Checks your email and sends you a reply with information about how to get home by train in Tokyo.",
-
-	"dependencies" : {
-		"imap" : "0.7.x",
-		"colors" : "0.6.x",
-		"mailparser" : "0.3.x",
-		"jsdom": "0.5.x",
-		"request": "2.14.x",
-		"emailjs": "0.3.x"
-	},
-
-	"engines" : {
-		"node" :">= 0.8",
-		"npm" : "1.1.x"
-	}
+  "name": "dmr-imap-norikae",
+  "version": "0.0.0",
+  "author": "David M. Roehrscheid <david.roehrscheid@gmail.com>",
+  "description": "Checks your email and sends you a reply with information about how to get home by train in Tokyo.",
+  "dependencies": {
+    "imap": "0.7.7",
+    "colors": "0.6.x",
+    "mailparser": "0.3.x",
+    "jsdom": "0.5.x",
+    "request": "2.14.x",
+    "emailjs": "0.3.x"
+  },
+  "devDependencies": {
+    "grunt": "~0.4.0",
+    "grunt-contrib-jshint": "~0.2.0",
+    "grunt-contrib-nodeunit": "~0.1.2"
+  },
+  "engines": {
+    "node": ">= 0.8",
+    "npm": "1.1.x"
+  }
 }
