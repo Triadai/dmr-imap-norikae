@@ -18,3 +18,4 @@ node_modules/
 account.json
 .env
 readme.html
+tmp/

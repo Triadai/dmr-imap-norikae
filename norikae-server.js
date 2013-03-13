@@ -87,8 +87,13 @@ app.listen(port);
 debug("server: ".red + "listening to http on port " + port);
 
 function httphandler(req, res){
-  res.writeHead(200);
-  var response = "Parsed " + mailcount + " mails since start - " + requestcount + " requests. Server is ";
+  if(req.url === "/reconnect.do" && req.method == "POST"){
+	debug("Someone pressed the reconnect button.");
+	mailbox.reconnect();
+  }
+  res.writeHead(200, {'Content-Type' : 'text/html'});
+  var response = "<html><body>";
+  response += "<p>Parsed " + mailcount + " mails since start - " + requestcount + " requests. Server is ";
   if ( mailbox.is_connected() ){ response += "connected";}
   else{ response += "not connected";}
 
@@ -96,6 +101,8 @@ function httphandler(req, res){
 
   if ( mailbox.is_authenticated() ){ response += "authenticated";}
   else{ response += "not authenticated";}
+  response += "</p><p><form method='POST' action='/reconnect.do'><input value='Reconnect' type='submit'></form></p>";
 
+  response += "</body></html>";
   res.end(response);
 }
