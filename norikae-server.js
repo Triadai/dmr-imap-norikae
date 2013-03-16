@@ -75,10 +75,6 @@ mailbox.on("mailreadytoparse", function(mail){
   });
 });
 
-mailbox.on("error", function(error){ debug("mailbox on error: " + error);});
-mailbox.on("end", function(){ debug("maibox on end");});
-mailbox.on("close", function(bool){ var s = "mailbox on close with"; if(!bool){ s+="out";} s+=" error"; debug(s); });
-
 /* ***** */
 // Http Server
 var port = process.env.PORT || 8080;
@@ -87,9 +83,10 @@ app.listen(port);
 debug("server: ".red + "listening to http on port " + port);
 
 function httphandler(req, res){
-  if(req.url === "/reconnect.do" && req.method == "POST"){
-	debug("Someone pressed the reconnect button.");
-	mailbox.reconnect();
+  if(req.url === "/reconnect.do" && req.method === "POST"){
+    debug("Someone pressed the reconnect button.");
+    mailbox.reconnect();
+    res.end("<!doctype html><html><head></head><body><a href='/'>back</a></body></html>");
   }
   res.writeHead(200, {'Content-Type' : 'text/html'});
   var response = "<html><body>";
